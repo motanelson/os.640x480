@@ -2,6 +2,28 @@
 [ORG 0x7C00]          ; Endereço de carregamento do bootloader
 
 start:
+; ---------------------------------------------------------------------
+; Ativar A20 via 8042 Keyboard Controller
+; ---------------------------------------------------------------------
+
+enable_A20:
+    call wait_input_empty
+    mov al,0xD1            ; Command: Write output port
+    out 0x64,al
+    call wait_input_empty
+    mov al,0xDF            ; Enable A20 (bit 1 = 1)
+    out 0x60,al
+    call wait_input_empty
+    
+
+; ---------------------------------------------------------------------
+; Esperar o buffer de entrada do 8042 ficar vazio
+; ---------------------------------------------------------------------
+wait_input_empty:
+    in al,0x64
+    test al,2              ; bit 1 = input buffer full
+    jnz wait_input_empty
+    
     mov ax,0x12
     int 0x10
     mov dx, 0x3C4

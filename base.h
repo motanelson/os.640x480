@@ -5147,7 +5147,7 @@ typedef struct Bitmap {
     int y;          // Comprimento em Y
     unsigned char* data; // Ponteiro para os dados do bitmap
 } Bitmap;
-char *fbp=(char *)0x00070000L;
+char *fbp=(char *)0x000120000L;
 char *fbps=(char *)0x000a0000L;
 
 
